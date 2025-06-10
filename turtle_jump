@@ -1,0 +1,68 @@
+import SpriteKit
+import UIKit // Import UIKit for UIColor
+
+class GameScene: SKScene {
+    // This method is called when the scene is presented by an SKView.
+    // It's the perfect place to set up your game's initial content.
+    override func didMove(to view: SKView) {
+        // Set the background color of the scene
+        self.backgroundColor = SKColor.darkGray
+        
+        // Create a label node
+        let myLabel = SKLabelNode(fontNamed: "Chalkduster")
+        
+        // Set the text for the label
+        myLabel.text = "Hello, SpriteKit!"
+        
+        // Set the font size for the label
+        myLabel.fontSize = 65
+        
+        // Set the position of the label to the center of the scene
+        // The scene's anchorPoint is (0.5, 0.5) by default, meaning its origin is at the center.
+        myLabel.position = CGPoint(x: frame.midX, y: frame.midY)
+        
+        // Add the label to the scene as a child node
+        self.addChild(myLabel)
+        
+        // Optional: Add a simple action to the label
+        let fadeIn = SKAction.fadeIn(withDuration: 1.0)
+        let fadeOut = SKAction.fadeOut(withDuration: 1.0)
+        let sequence = SKAction.sequence([fadeIn, fadeOut])
+        let repeatForever = SKAction.repeatForever(sequence)
+        myLabel.run(repeatForever)
+    }
+    
+    // This method is called once per frame, allowing you to update game logic.
+    // Use it for things like moving sprites, checking collisions, etc.
+    override func update(_ currentTime: TimeInterval) {
+        // Called before each frame is rendered
+    }
+    
+    // This method is called when a touch begins on the screen.
+    // Use it to handle user input like taps.
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Loop through all touches that occurred
+        for touch in touches {
+            // Get the location of the touch within the scene
+            let location = touch.location(in: self)
+            
+            // Create a sprite node at the touch location
+            let sprite = SKSpriteNode(imageNamed: "Spaceship") // Make sure you have a "Spaceship.png" in your assets
+            sprite.position = location
+            sprite.setScale(0.5) // Scale down the sprite
+            
+            // Add a simple action to the sprite (move it up and fade out)
+            let moveUp = SKAction.moveBy(x: 0, y: 100, duration: 1.5)
+            let fadeOut = SKAction.fadeOut(withDuration: 1.5)
+            let group = SKAction.group([moveUp, fadeOut])
+            let remove = SKAction.removeFromParent()
+            let sequence = SKAction.sequence([group, remove])
+            
+            // Run the action on the sprite
+            sprite.run(sequence)
+            
+            // Add the sprite to the scene
+            self.addChild(sprite)
+        }
+    }
+}
